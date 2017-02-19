@@ -15,7 +15,7 @@ class HangmanViewController: UIViewController {
     @IBOutlet var guessButton: UIView!
     var correct = ""
     var discovered = Set<String>()
-    var correctLetterLocation = [String: [Int]]()
+    var correctLetters = Set<String>()
     
     var numWrong = 0
     @IBOutlet weak var numWrongGuesses: UILabel!
@@ -25,24 +25,18 @@ class HangmanViewController: UIViewController {
         
         let hangmanPhrases = HangmanPhrases()
         // Generate a random phrase for the user to guess
-        var phrase: String = hangmanPhrases.getRandomPhrase()
+        let phrase: String = hangmanPhrases.getRandomPhrase()
         correct = phrase
         print(phrase)
         discovered.insert(" ")
         
-        //
-        phrase = phrase.replacingOccurrences(of: " ", with: "")
-        for c in 0..<phrase.characters.count {
-            let letter = String(phrase[phrase.index(phrase.startIndex, offsetBy: c)])
-            if let locations = correctLetterLocation[letter] {
-                correctLetterLocation[letter] = locations + [c]
-            } else {
-                correctLetterLocation[letter] = [c]
-            }
+        let nospaces = phrase.replacingOccurrences(of: " ", with: "")
+        for letter in Array(nospaces.characters) {
+            correctLetters.insert(String(letter))
+            print(letter)
         }
-        //
-        
         placeBlanks(phrase: phrase)
+        guessTextField.text = ""
     }
 
     override func didReceiveMemoryWarning() {
@@ -61,49 +55,108 @@ class HangmanViewController: UIViewController {
         }
         phraseBlanks.text = blanks
     }
-    
-//    func placeBlanks(phrase: String) {
-//        let words: [String] = phrase.components(separatedBy: " ")
-//        var blanks: String = ""
-//        for word in words {
-//            for _ in 0..<word.characters.count {
-//                blanks += "_ "
-//            }
-//            blanks += " "
-//        }
-//        phraseBlanks.text = blanks
-//    }
-    
-//    func replaceBlanks(locations: [Int], letter : String) {
-//        var blanks = phraseBlanks.text!
-//        for loc in locations {
-//            var count = loc
-//            var changeLoc = 0;
-//            for c in 0..<blanks.characters.count {
-//                if count == 0 {
-//                    break
-//                } else if blanks[blanks.index(blanks.startIndex, offsetBy: c)] == "_"{
-//                    count -= 1
-//                    changeLoc = c
-//                }
-//            }
-//            blanks = blanks.substring(to: changeLoc) + letter + blanks.substring(from: changeLoc + 1)
-//        }
-//    }
 
     @IBAction func checkGuess(_ sender: Any) {
         if let letter: String = guessTextField.text {
-            if let _ = correctLetterLocation[letter] {
+            if correctLetters.contains(letter) {
                 discovered.insert(letter)
                 placeBlanks(phrase: correct)
-//                replaceBlanks(locations : locations, letter: letter)
             } else {
                 numWrong += 1
                 numWrongGuesses.text = String(numWrong)
             }
         }
+        guessTextField.text = ""
     }
 
+
+    @IBAction func tapA(_ sender: UIButton) {
+        guessTextField.text = "A"
+        sender.setTitleColor(UIColor.gray, for: .normal)
+        sender.isEnabled = false
+    }
+    @IBAction func tapB(_ sender: UIButton) {
+        guessTextField.text = "B"
+        sender.setTitleColor(UIColor.gray, for: .normal)
+        sender.isEnabled = false
+    }
+    @IBAction func tapC(_ sender: UIButton) {
+        guessTextField.text = "C"
+        sender.setTitleColor(UIColor.gray, for: .normal)
+        sender.isEnabled = false
+    }
+    @IBAction func tapD(_ sender: UIButton) {
+        guessTextField.text = "D"
+        sender.setTitleColor(UIColor.gray, for: .normal)
+        sender.isEnabled = false
+    }
+    @IBAction func tapE(_ sender: UIButton) {
+        guessTextField.text = "E"
+        sender.setTitleColor(UIColor.gray, for: .normal)
+        sender.isEnabled = false
+    }
+    @IBAction func tapF(_ sender: UIButton) {
+        guessTextField.text = "F"
+        sender.setTitleColor(UIColor.gray, for: .normal)
+        sender.isEnabled = false
+    }
+    @IBAction func tapG(_ sender: UIButton) {
+        guessTextField.text = "G"
+        sender.setTitleColor(UIColor.gray, for: .normal)
+        sender.isEnabled = false
+    }
+    @IBAction func tapH(_ sender: UIButton) {
+        guessTextField.text = "H"
+        sender.setTitleColor(UIColor.gray, for: .normal)
+        sender.isEnabled = false
+    }
+    @IBAction func tapI(_ sender: UIButton) {
+        guessTextField.text = "I"
+        sender.setTitleColor(UIColor.gray, for: .normal)
+        sender.isEnabled = false
+    }
+    @IBAction func tapJ(_ sender: UIButton) {
+        guessTextField.text = "J"
+        sender.setTitleColor(UIColor.gray, for: .normal)
+        sender.isEnabled = false
+    }
+    @IBAction func tapK(_ sender: UIButton) {
+        guessTextField.text = "K"
+        sender.setTitleColor(UIColor.gray, for: .normal)
+        sender.isEnabled = false
+    }
+    @IBAction func tapL(_ sender: UIButton) {
+        guessTextField.text = "L"
+        sender.setTitleColor(UIColor.gray, for: .normal)
+        sender.isEnabled = false
+    }
+    @IBAction func tapM(_ sender: UIButton) {
+        guessTextField.text = "M"
+        sender.setTitleColor(UIColor.gray, for: .normal)
+        sender.isEnabled = false
+    }
+    @IBAction func tapN(_ sender: UIButton) {
+        guessTextField.text = "N"
+        sender.setTitleColor(UIColor.gray, for: .normal)
+        sender.isEnabled = false
+    }
+    @IBAction func tapO(_ sender: UIButton) {
+        guessTextField.text = "O"
+        sender.setTitleColor(UIColor.gray, for: .normal)
+        sender.isEnabled = false
+    }
+    @IBAction func tapP(_ sender: UIButton) {
+        guessTextField.text = "P"
+        sender.setTitleColor(UIColor.gray, for: .normal)
+        sender.isEnabled = false
+    }
+    @IBAction func tapQ(_ sender: UIButton) {
+        guessTextField.text = "Q"
+        sender.setTitleColor(UIColor.gray, for: .normal)
+        sender.isEnabled = false
+    }
+    
+    
     /*
     // MARK: - Navigation
 
