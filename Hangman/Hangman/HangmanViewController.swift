@@ -13,9 +13,9 @@ class HangmanViewController: UIViewController {
     @IBOutlet weak var phraseBlanks: UILabel!
     @IBOutlet weak var guessTextField: UITextField!
     @IBOutlet var guessButton: UIView!
-    let alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-    var guessed: [String] = []
-    var correctLetters = Set<String>()
+    var correct = ""
+    var discovered = Set<String>()
+    var correctLetterLocation = [String: [Int]]()
     
     var numWrong = 0
     @IBOutlet weak var numWrongGuesses: UILabel!
@@ -25,11 +25,23 @@ class HangmanViewController: UIViewController {
         
         let hangmanPhrases = HangmanPhrases()
         // Generate a random phrase for the user to guess
-        let phrase: String = hangmanPhrases.getRandomPhrase()
+        var phrase: String = hangmanPhrases.getRandomPhrase()
+        correct = phrase
         print(phrase)
+        discovered.insert(" ")
+        
+        //
+        phrase = phrase.replacingOccurrences(of: " ", with: "")
         for c in 0..<phrase.characters.count {
-            correctLetters.insert(String(phrase[phrase.index(phrase.startIndex, offsetBy: c)]))
+            let letter = String(phrase[phrase.index(phrase.startIndex, offsetBy: c)])
+            if let locations = correctLetterLocation[letter] {
+                correctLetterLocation[letter] = locations + [c]
+            } else {
+                correctLetterLocation[letter] = [c]
+            }
         }
+        //
+        
         placeBlanks(phrase: phrase)
     }
 
@@ -37,23 +49,54 @@ class HangmanViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
     func placeBlanks(phrase: String) {
-        let words: [String] = phrase.components(separatedBy: " ")
         var blanks: String = ""
-        for word in words {
-            for _ in 0..<word.characters.count {
+        for c in 0..<phrase.characters.count {
+            let letter = String(phrase[phrase.index(phrase.startIndex, offsetBy: c)])
+            if discovered.contains(letter) {
+                blanks += letter
+            } else {
                 blanks += "_ "
             }
-            blanks += " "
         }
         phraseBlanks.text = blanks
     }
+    
+//    func placeBlanks(phrase: String) {
+//        let words: [String] = phrase.components(separatedBy: " ")
+//        var blanks: String = ""
+//        for word in words {
+//            for _ in 0..<word.characters.count {
+//                blanks += "_ "
+//            }
+//            blanks += " "
+//        }
+//        phraseBlanks.text = blanks
+//    }
+    
+//    func replaceBlanks(locations: [Int], letter : String) {
+//        var blanks = phraseBlanks.text!
+//        for loc in locations {
+//            var count = loc
+//            var changeLoc = 0;
+//            for c in 0..<blanks.characters.count {
+//                if count == 0 {
+//                    break
+//                } else if blanks[blanks.index(blanks.startIndex, offsetBy: c)] == "_"{
+//                    count -= 1
+//                    changeLoc = c
+//                }
+//            }
+//            blanks = blanks.substring(to: changeLoc) + letter + blanks.substring(from: changeLoc + 1)
+//        }
+//    }
 
     @IBAction func checkGuess(_ sender: Any) {
         if let letter: String = guessTextField.text {
-            if (correctLetters.contains(letter)) {
-                
+            if let _ = correctLetterLocation[letter] {
+                discovered.insert(letter)
+                placeBlanks(phrase: correct)
+//                replaceBlanks(locations : locations, letter: letter)
             } else {
                 numWrong += 1
                 numWrongGuesses.text = String(numWrong)
