@@ -11,6 +11,14 @@ import UIKit
 class HangmanViewController: UIViewController {
 
     @IBOutlet weak var phraseBlanks: UILabel!
+    @IBOutlet weak var guessTextField: UITextField!
+    @IBOutlet var guessButton: UIView!
+    let alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+    var guessed: [String] = []
+    var correctLetters = Set<String>()
+    
+    var numWrong = 0
+    @IBOutlet weak var numWrongGuesses: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +27,9 @@ class HangmanViewController: UIViewController {
         // Generate a random phrase for the user to guess
         let phrase: String = hangmanPhrases.getRandomPhrase()
         print(phrase)
+        for c in 0..<phrase.characters.count {
+            correctLetters.insert(String(phrase[phrase.index(phrase.startIndex, offsetBy: c)]))
+        }
         placeBlanks(phrase: phrase)
     }
 
@@ -38,7 +49,17 @@ class HangmanViewController: UIViewController {
         }
         phraseBlanks.text = blanks
     }
-    
+
+    @IBAction func checkGuess(_ sender: Any) {
+        if let letter: String = guessTextField.text {
+            if (correctLetters.contains(letter)) {
+                
+            } else {
+                numWrong += 1
+                numWrongGuesses.text = String(numWrong)
+            }
+        }
+    }
 
     /*
     // MARK: - Navigation
