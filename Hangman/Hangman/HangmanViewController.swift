@@ -10,6 +10,8 @@ import UIKit
 
 class HangmanViewController: UIViewController {
 
+    @IBOutlet weak var phraseBlanks: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -17,11 +19,24 @@ class HangmanViewController: UIViewController {
         // Generate a random phrase for the user to guess
         let phrase: String = hangmanPhrases.getRandomPhrase()
         print(phrase)
+        placeBlanks(phrase: phrase)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func placeBlanks(phrase: String) {
+        let words: [String] = phrase.components(separatedBy: " ")
+        var blanks: String = ""
+        for word in words {
+            for _ in 0..<word.characters.count {
+                blanks += "_ "
+            }
+            blanks += " "
+        }
+        phraseBlanks.text = blanks
     }
     
 
